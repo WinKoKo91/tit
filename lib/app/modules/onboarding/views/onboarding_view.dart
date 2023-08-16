@@ -14,6 +14,7 @@ class OnboardingView extends GetView<OnboardingController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: OnBoardingSlider(
+        indicatorAbove:true,
         headerBackgroundColor: Colors.white,
         finishButtonText: 'Register',
         finishButtonStyle: const FinishButtonStyle(
@@ -24,15 +25,12 @@ class OnboardingView extends GetView<OnboardingController> {
         background: [
           Container(),
           Container(),
+          Container(),
         ],
-        totalPage: 2,
+        totalPage: 3,
         speed: 1.8,
-        skipFunctionOverride: () {
-          Get.offNamed(Routes.HOME);
-        },
-        onFinish: () {
-          Get.offNamed(Routes.HOME);
-        },
+        skipFunctionOverride: controller.onNextPage,
+        onFinish: controller.onNextPage,
         pageBodies: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 40),
@@ -42,7 +40,20 @@ class OnboardingView extends GetView<OnboardingController> {
                   'assets/svg/chat.svg',
                   height: Get.height * 0.6,
                 ),
-                Text('Send Free Message'),
+                const Text('Send Free Message'),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              children: <Widget>[
+                SvgPicture.asset(
+                  'assets/svg/chat.svg',
+                  height: Get.height * 0.6,
+                ),
+                const Text("Connect Your Friend"),
+
               ],
             ),
           ),
@@ -54,7 +65,7 @@ class OnboardingView extends GetView<OnboardingController> {
                   'assets/svg/message.svg',
                   height: Get.height * 0.6,
                 ),
-                Text('Send Free Message'),
+                Text('Make Group Chat'),
               ],
             ),
           ),
