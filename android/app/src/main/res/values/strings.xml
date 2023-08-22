@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tit</string>
+    <string name="facebook_app_id">1434405083790447</string>
+    <string name="fb_login_protocol_scheme">fb1434405083790447</string>
+    <string name="facebook_client_token">bf6ec7acd51e32b86c0b22f933a8f9f9</string>
+</resources>

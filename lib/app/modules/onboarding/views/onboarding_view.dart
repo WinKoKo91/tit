@@ -3,7 +3,7 @@ import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
-import 'package:tit_ti_too/app/routes/app_pages.dart';
+import 'package:tit/app/routes/app_pages.dart';
 
 import '../controllers/onboarding_controller.dart';
 

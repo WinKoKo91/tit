@@ -1,4 +1,4 @@
-package com.kwinlab.tit_ti_too
+package com.kwinlab.tit
 
 import io.flutter.embedding.android.FlutterActivity
 

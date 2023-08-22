@@ -1,11 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:tit/app/routes/app_pages.dart';
+
+import '../../../core/services/auth_service.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  AuthService authService = Get.find<AuthService>();
 
-  final count = 0.obs;
+  late User user;
   @override
   void onInit() {
+    user  = Get.arguments;
     super.onInit();
   }
 
@@ -19,5 +24,9 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+
+  void logout() async {
+    await authService.signOut();
+    Get.offAllNamed(Routes.LOGIN);
+  }
 }

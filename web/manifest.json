@@ -1,6 +1,6 @@
 {
-    "name": "tit_ti_too",
-    "short_name": "tit_ti_too",
+    "name": "tit",
+    "short_name": "tit",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

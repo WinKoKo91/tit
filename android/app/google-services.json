@@ -7,6 +7,78 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:515560124926:android:c82ca7c1c57ce3970a50af",
+        "android_client_info": {
+          "package_name": "com.kwinlab.tit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjV66yOn9P216o_mQkvLMv1najBiVhwb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "515560124926-94juks5lnv1ueq5sqkhg6fj5kanfvja9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kwinlab.tit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515560124926:android:ec961fa222e9e3150a50af",
+        "android_client_info": {
+          "package_name": "com.kwinlab.tit.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjV66yOn9P216o_mQkvLMv1najBiVhwb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "515560124926-94juks5lnv1ueq5sqkhg6fj5kanfvja9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kwinlab.tit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:515560124926:android:541041685569cbb60a50af",
         "android_client_info": {
           "package_name": "com.kwinlab.tit_ti_too"
@@ -29,6 +101,13 @@
             {
               "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "515560124926-94juks5lnv1ueq5sqkhg6fj5kanfvja9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kwinlab.tit"
+              }
             }
           ]
         }

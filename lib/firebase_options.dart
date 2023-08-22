@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBjV66yOn9P216o_mQkvLMv1najBiVhwb4',
-    appId: '1:515560124926:android:541041685569cbb60a50af',
+    appId: '1:515560124926:android:c82ca7c1c57ce3970a50af',
     messagingSenderId: '515560124926',
     projectId: 'tittitoo-6eabd',
     storageBucket: 'tittitoo-6eabd.appspot.com',
@@ -64,6 +64,6 @@ class DefaultFirebaseOptions {
     projectId: 'tittitoo-6eabd',
     storageBucket: 'tittitoo-6eabd.appspot.com',
     iosClientId: '515560124926-bgnd9b4q5j66ktn4nmif252vd121bc2f.apps.googleusercontent.com',
-    iosBundleId: 'com.kwinlab.titTiToo',
+    iosBundleId: 'com.kwinlab.tit',
   );
 }

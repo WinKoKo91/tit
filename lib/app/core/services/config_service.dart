@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tit_ti_too/app/core/constants/app_keys.dart';
-import 'package:tit_ti_too/app/data/local/preference/preference_manager.dart';
+import 'package:tit/app/core/constants/app_keys.dart';
+import 'package:tit/app/data/local/preference/preference_manager.dart';
 
 class ConfigService extends GetxService {
   static ConfigService get to => Get.find<ConfigService>();
