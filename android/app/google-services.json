@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
+          "client_id": "515560124926-e0e0tm525gq2b3tsuqnfeb63gtk4dqgg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kwinlab.tit",
+            "certificate_hash": "e92845f525bb656480b7a572ac37fd234594403b"
+          }
+        },
+        {
+          "client_id": "515560124926-87mekuu82pol827ic4mrq9i8vj9lducn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -50,7 +58,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
+          "client_id": "515560124926-3ngun5ek52802vmgvs2q7bsgjle1e8hj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kwinlab.tit.dev",
+            "certificate_hash": "e92845f525bb656480b7a572ac37fd234594403b"
+          }
+        },
+        {
+          "client_id": "515560124926-87mekuu82pol827ic4mrq9i8vj9lducn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -86,7 +102,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "515560124926-1eomre6n1nfvt73h5sjlef1b8g0plrdf.apps.googleusercontent.com",
+          "client_id": "515560124926-87mekuu82pol827ic4mrq9i8vj9lducn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
