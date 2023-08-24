@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:tit/app/data/models/user_model.dart';
 import 'package:tit/app/routes/app_pages.dart';
 
 import '../../../core/services/auth_service.dart';
@@ -7,7 +8,7 @@ import '../../../core/services/auth_service.dart';
 class HomeController extends GetxController {
   AuthService authService = Get.find<AuthService>();
 
-  late User user;
+  late UserModel user;
   @override
   void onInit() {
     user  = Get.arguments;

@@ -24,6 +24,6 @@ class OnboardingController extends GetxController {
 
   onNextPage() async{
     await ConfigService.to.saveFirstTimeOpen();
-    Get.offNamed(Routes.HOME);
+    Get.offNamed(Routes.LOGIN);
   }
 }

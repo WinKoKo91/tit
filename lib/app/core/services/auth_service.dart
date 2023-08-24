@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
 
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -13,7 +16,6 @@ import 'package:tit/app/modules/home/views/home_view.dart';
 import 'package:tit/app/modules/login/views/login_view.dart';
 
 class AuthService extends GetxService {
-
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
@@ -31,10 +33,10 @@ class AuthService extends GetxService {
 
   signInWithGoogle() async {
     final GoogleSignInAccount? googleUser =
-    await GoogleSignIn(scopes: <String>["email"]).signIn();
+        await GoogleSignIn(scopes: <String>["email"]).signIn();
 
     final GoogleSignInAuthentication googleAuth =
-    await googleUser!.authentication;
+        await googleUser!.authentication;
 
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
@@ -43,22 +45,30 @@ class AuthService extends GetxService {
   }
 
   signInWithApple() async {
-    final appleAuth = await SignInWithApple.getAppleIDCredential(
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
+      nonce: nonce,
     );
 
-    final appleProvider = AppleAuthProvider();
+    // Create an `OAuthCredential` from the credential returned by Apple.
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      rawNonce: rawNonce,
+    );
 
-    return await FirebaseAuth.instance.signInWithProvider(appleProvider);
+    return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
   }
 
   signInWithFacebook() async {
     final LoginResult loginResult = await _facebookAuth.login();
     final OAuthCredential facebookAuthCredential =
-    FacebookAuthProvider.credential(loginResult.accessToken!.token);
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
     return await FirebaseAuth.instance
         .signInWithCredential(facebookAuthCredential);
   }
@@ -70,7 +80,21 @@ class AuthService extends GetxService {
       _googleSignIn.signOut();
     }
 
-    await _facebookAuth.logOut();
+     await _facebookAuth.logOut();
+  }
 
+  String generateNonce([int length = 32]) {
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+  /// Returns the sha256 hash of [input] in hex notation.
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
   }
 }

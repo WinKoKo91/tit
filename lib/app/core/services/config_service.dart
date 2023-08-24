@@ -15,7 +15,7 @@ class ConfigService extends GetxService {
     Locale('mm', 'MY'),
   ];
 
-  bool isFirstTimeOpen = false;
+  bool isFirstTimeOpen = true;
 
   PackageInfo? _packageInfo;
 
@@ -26,13 +26,13 @@ class ConfigService extends GetxService {
     _packageInfo = await PackageInfo.fromPlatform();
 
     isFirstTimeOpen = await _preferenceManager.getBool(AppKey.firstTimeOpen,
-        defaultValue: false);
+        defaultValue: true);
 
     super.onInit();
   }
 
   Future<bool> saveFirstTimeOpen() async {
-    return await _preferenceManager.setBool(AppKey.firstTimeOpen, true);
+    return await _preferenceManager.setBool(AppKey.firstTimeOpen, false);
   }
 
   void onInitLocale() async {

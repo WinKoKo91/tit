@@ -1,10 +1,10 @@
-
-class UserEntity{
-
+class UserEntity {
   String? accessToken;
   String? displayName;
   String? email;
-  String? phtotoUrl;
+  String? photoUrl;
+  String? id;
 
-  UserEntity(this.accessToken, this.displayName, this.email, this.phtotoUrl);
+  UserEntity(
+      {this.accessToken, this.displayName, this.email, this.photoUrl, this.id});
 }
