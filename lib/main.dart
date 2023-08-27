@@ -7,12 +7,16 @@ import 'package:get/get.dart';
 import 'package:tit/firebase_options.dart';
 
 import 'app/core/initial_binding.dart';
+import 'app/core/services/config_service.dart';
 import 'app/core/theme/app_theme.dart';
+import 'app/data/local/preference/preference_manager.dart';
+import 'app/data/local/preference/preference_manager_impl.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
 
   runApp(
     ScreenUtilInit(builder: (context, child) {

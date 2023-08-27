@@ -8,6 +8,7 @@ class SplashController extends GetxController {
 
   @override
   void onInit() {
+    print("Splash");
     super.onInit();
   }
 
@@ -18,7 +19,7 @@ class SplashController extends GetxController {
     });
 
     Future.delayed(Duration(seconds: 3), () {
-      Get.offNamed(Routes.LOGIN);
+      Get.offNamed(Routes.ONBOARDING);
     });
     super.onReady();
   }

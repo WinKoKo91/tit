@@ -7,10 +7,10 @@ ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     colorScheme: lightColorScheme,
     brightness: Brightness.light,
-   /* inputDecorationTheme: lightInputDecorationTheme*/);
+    inputDecorationTheme: lightInputDecorationTheme);
 
 ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: darkColorScheme,
     brightness: Brightness.dark,
-    /* inputDecorationTheme: lightInputDecorationTheme*/);
+    inputDecorationTheme: lightInputDecorationTheme);

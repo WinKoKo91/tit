@@ -15,9 +15,12 @@ import 'package:tit/app/data/local/preference/preference_manager.dart';
 import 'package:tit/app/modules/home/views/home_view.dart';
 import 'package:tit/app/modules/login/views/login_view.dart';
 
+import 'auth_exception.dart';
+
 class AuthService extends GetxService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
+  final PreferenceManager _preferenceManager = Get.find(tag: (PreferenceManager).toString());
 
   handleAuthState() {
     return StreamBuilder(
@@ -73,14 +76,24 @@ class AuthService extends GetxService {
         .signInWithCredential(facebookAuthCredential);
   }
 
+  signInWithEmailAndPassword(String email, String password) async {
+    try {
+      return await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      throw AuthException.determineError(e);
+    }
+  }
+
   signOut() async {
+    _preferenceManager.clear();
     FirebaseAuth.instance.signOut();
 
     if (await _googleSignIn.isSignedIn()) {
       _googleSignIn.signOut();
     }
 
-     await _facebookAuth.logOut();
+    await _facebookAuth.logOut();
   }
 
   String generateNonce([int length = 32]) {

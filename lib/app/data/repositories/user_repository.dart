@@ -3,18 +3,10 @@ import 'package:tit/app/core/constants/app_keys.dart';
 import 'package:tit/app/data/entities/user_entity.dart';
 import 'package:tit/app/data/models/user_model.dart';
 
-class FireStoreUser {
+abstract class UserRepository {
 
-  final _fireStoreUserCollection = FirebaseFirestore.instance.collection(AppKey.users);
+  Future<void> addNewUser(UserModel userModel);
 
-  static Future<void> createUser(UserEntity userModel) async{
-
-  }
-
-
-
-
-
-
+  Future<UserModel?> getUser();
 
 }

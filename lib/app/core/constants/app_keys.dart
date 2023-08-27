@@ -5,4 +5,6 @@ class AppKey {
 
   static const String users = "users";
   static const String id = "id";
+
+  static const String user = 'user';
 }

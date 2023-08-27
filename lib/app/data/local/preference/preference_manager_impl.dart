@@ -7,6 +7,7 @@ class PreferenceManagerImpl implements PreferenceManager {
 
   @override
   Future<String> getString(String key, {String defaultValue = ""}) {
+
     return _preference
         .then((preference) => preference.getString(key) ?? defaultValue);
   }

@@ -23,10 +23,11 @@ class ConfigService extends GetxService {
 
   @override
   void onInit() async {
-    _packageInfo = await PackageInfo.fromPlatform();
+
 
     isFirstTimeOpen = await _preferenceManager.getBool(AppKey.firstTimeOpen,
         defaultValue: true);
+    _packageInfo = await PackageInfo.fromPlatform();
 
     super.onInit();
   }
