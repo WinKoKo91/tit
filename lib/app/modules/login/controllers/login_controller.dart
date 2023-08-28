@@ -147,7 +147,7 @@ class LoginController extends GetxController {
     Get.offAllNamed(Routes.HOME);
   }
 
-  void onPressEmailAndPasswordLogin() {
+  void onLogin() {
     if (formKey.currentState!.validate()) {
       onEmailAndPasswordLogin();
     }

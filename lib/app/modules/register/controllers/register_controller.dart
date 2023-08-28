@@ -1,9 +1,30 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
-  //TODO: Implement SignUpController
+  final formKey = GlobalKey<FormState>();
 
-  final count = 0.obs;
+  final emailTEC = TextEditingController();
+  final passwordTEC = TextEditingController();
+  final confirmPasswordTEC = TextEditingController();
+  final nameTEC = TextEditingController();
+
+  final _isLoading = false.obs;
+
+  bool get isLoading => _isLoading.value;
+
+  set isLoading(value) {
+    _isLoading.value = value;
+  }
+
+  final _isHidePassword = true.obs;
+
+  bool get isHidePassword => _isHidePassword.value;
+
+  set isHidePassword(value) {
+    _isHidePassword.value = value;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -16,8 +37,17 @@ class RegisterController extends GetxController {
 
   @override
   void onClose() {
+    nameTEC.dispose();
+    emailTEC.dispose();
+    passwordTEC.dispose();
+    confirmPasswordTEC.dispose();
+
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void onTapHidePassword() {
+    _isHidePassword.toggle();
+  }
+
+  void onRegister() {}
 }

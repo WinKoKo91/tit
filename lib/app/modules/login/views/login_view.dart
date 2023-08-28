@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:tit/app/core/src/app_colors.dart';
 import 'package:tit/app/routes/app_pages.dart';
 
+import '../../../widgets/greeting_widget.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -31,28 +32,7 @@ class LoginView extends GetView<LoginController> {
                     children: [
                       Flexible(
                         flex: 4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Hero(
-                              tag: 'logo',
-                              child: SvgPicture.asset(
-                                'assets/svg/logo.svg',
-                                height: 120,
-                                width: 120,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              'Welcome back your\'ve been missed!',
-                              style: Get.theme.textTheme.titleMedium,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                        child: GreetingWidget(),
                       ),
                       TextFormField(
                         controller: controller.emailTEC,
@@ -107,7 +87,7 @@ class LoginView extends GetView<LoginController> {
                           height: 48,
                           child: ElevatedButton(
                               onPressed:
-                                  controller.onPressEmailAndPasswordLogin,
+                                  controller.onLogin,
                               child: const Text("Login"))),
                       const Spacer(),
                       RichText(
@@ -161,6 +141,8 @@ class LoginView extends GetView<LoginController> {
     );
   }
 }
+
+
 
 class SocialLoginWidget extends GetView<LoginController> {
   const SocialLoginWidget({
