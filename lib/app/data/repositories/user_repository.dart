@@ -4,9 +4,9 @@ import 'package:tit/app/data/entities/user_entity.dart';
 import 'package:tit/app/data/models/user_model.dart';
 
 abstract class UserRepository {
-
   Future<void> addNewUser(UserModel userModel);
 
   Future<UserModel?> getUser();
 
+  Future<void> signOut();
 }

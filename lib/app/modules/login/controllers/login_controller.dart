@@ -133,6 +133,7 @@ class LoginController extends GetxController {
         displayName: user.displayName ?? "",
         email: user.email ?? "",
         photoUrl: user.photoURL ?? "",
+        active: true,
         accessToken: userCredential.credential?.accessToken ?? "");
 
     await userRepository.addNewUser(userModel);

@@ -86,7 +86,7 @@ class AuthService extends GetxService {
   }
 
   signOut() async {
-    _preferenceManager.clear();
+
     FirebaseAuth.instance.signOut();
 
     if (await _googleSignIn.isSignedIn()) {

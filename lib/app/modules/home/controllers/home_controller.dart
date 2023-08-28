@@ -37,6 +37,7 @@ class HomeController extends GetxController {
 
   void logout() async {
     await authService.signOut();
+    //await userRepository.signOut();
     Get.offAllNamed(Routes.LOGIN);
   }
 }

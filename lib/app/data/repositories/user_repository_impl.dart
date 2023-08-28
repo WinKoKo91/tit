@@ -26,13 +26,20 @@ class UserRepositoryImpl extends UserRepository {
     try {
       String result =
           await _preferenceManager.getString(AppKey.user, defaultValue: "");
-
-      print(result);
       var resultJson = json.decode(result);
       return UserModel.fromJson(resultJson);
     } catch (e) {
       print(e);
       return null;
     }
+  }
+
+  @override
+  Future<void> signOut() async {
+    _preferenceManager.clear();
+    String result =
+        await _preferenceManager.getString(AppKey.user, defaultValue: "");
+    var resultJson = json.decode(result);
+    return await FireStoreUser.signOut(resultJson[AppKey.id]);
   }
 }
