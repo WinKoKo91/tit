@@ -8,7 +8,6 @@ import '../../../core/services/auth/auth_service.dart';
 import '../../../data/repositories/user_repository.dart';
 
 class HomeController extends GetxController {
-
   UserRepository userRepository = Get.find<UserRepository>();
   final _user = Rxn<UserEntity>();
 
@@ -20,13 +19,17 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    //user = UserEntity();
     user = await userRepository.getUser();
     super.onInit();
   }
 
   @override
   void onReady() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Get.offAllNamed(Routes.LOGIN);
+      }
+    });
     super.onReady();
   }
 
@@ -36,8 +39,6 @@ class HomeController extends GetxController {
   }
 
   void logout() async {
-
     await userRepository.signOut();
-    Get.offAllNamed(Routes.LOGIN);
   }
 }

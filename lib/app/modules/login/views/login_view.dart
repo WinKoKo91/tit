@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:tit/app/core/src/app_colors.dart';
+import 'package:tit/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -115,7 +117,9 @@ class LoginView extends GetView<LoginController> {
                           style: const TextStyle(color: Colors.black),
                           children: <TextSpan>[
                             TextSpan(
-                                text: 'Sign Up',
+                                text: 'Register',
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => Get.toNamed(Routes.REGISTER),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color:

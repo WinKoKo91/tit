@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
-import 'package:tit/app/modules/splash/bindings/splash_binding.dart';
-import 'package:tit/app/modules/splash/middlewares/onboarding_middleware.dart';
-import 'package:tit/app/modules/splash/views/splash_view.dart';
+import 'package:tit/app/modules/register/bindings/register_binding.dart';
+import 'package:tit/app/modules/register/views/register_view.dart';
 
 import '../core/middleware/auth_middleware.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -11,6 +10,8 @@ import '../modules/login/views/login_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/middlewares/onboarding_middleware.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
+import '../modules/splash/bindings/splash_binding.dart';
+import '../modules/splash/views/splash_view.dart';
 
 part 'app_routes.dart';
 
@@ -42,6 +43,11 @@ class AppPages {
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
     ),
   ];
 }
