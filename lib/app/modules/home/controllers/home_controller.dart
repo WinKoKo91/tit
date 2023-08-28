@@ -8,7 +8,7 @@ import '../../../core/services/auth/auth_service.dart';
 import '../../../data/repositories/user_repository.dart';
 
 class HomeController extends GetxController {
-  AuthService authService = Get.find<AuthService>();
+
   UserRepository userRepository = Get.find<UserRepository>();
   final _user = Rxn<UserEntity>();
 
@@ -36,8 +36,8 @@ class HomeController extends GetxController {
   }
 
   void logout() async {
-    await authService.signOut();
-    //await userRepository.signOut();
+
+    await userRepository.signOut();
     Get.offAllNamed(Routes.LOGIN);
   }
 }

@@ -8,6 +8,7 @@ import 'package:tit/app/data/local/preference/preference_manager.dart';
 import 'package:tit/app/data/models/user_model.dart';
 import 'package:tit/app/data/repositories/user_repository.dart';
 
+import '../../core/services/auth/auth_service.dart';
 import '../remote/firestore_user.dart';
 
 class UserRepositoryImpl extends UserRepository {
@@ -36,10 +37,18 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<void> signOut() async {
-    _preferenceManager.clear();
-    String result =
-        await _preferenceManager.getString(AppKey.user, defaultValue: "");
-    var resultJson = json.decode(result);
-    return await FireStoreUser.signOut(resultJson[AppKey.id]);
+    try {
+      String result =
+          await _preferenceManager.getString(AppKey.user, defaultValue: "");
+      bool isFirstTimeOpen = await _preferenceManager
+          .getBool(AppKey.firstTimeOpen, defaultValue: false);
+
+      var resultJson = json.decode(result);
+      await FireStoreUser.signOut(resultJson[AppKey.id]);
+      _preferenceManager.clear();
+      _preferenceManager.setBool(AppKey.firstTimeOpen, isFirstTimeOpen);
+    } catch (e) {
+      print(e);
+    }
   }
 }

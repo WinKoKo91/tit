@@ -29,6 +29,8 @@ class FireStoreUser {
                 userModel.toFireStore(),
           )
           .add(userModel);
+    } else {
+      await userdata.docs[0].reference.update({'active': true});
     }
   }
 
@@ -39,8 +41,10 @@ class FireStoreUser {
           toFirestore: (UserModel userModel, options) =>
               userModel.toFireStore(),
         )
-        .where(AppKey.id, isEqualTo: id);
+        .where(AppKey.id, isEqualTo: id)
+        .get();
 
+    await userdata.docs[0].reference.update({'active': false});
     _authService.signOut();
   }
 }
