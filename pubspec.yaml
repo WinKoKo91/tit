@@ -29,8 +29,9 @@ dependencies:
   json_annotation: ^4.8.1
   flutter_spinkit: ^5.2.0
   fluttertoast: ^8.2.2
-
+  google_api_availability: ^5.0.0
   firebase_core: ^2.15.0
+  connectivity_plus: ^4.0.2
 
   # Analytics Tool
   firebase_analytics: 10.4.5

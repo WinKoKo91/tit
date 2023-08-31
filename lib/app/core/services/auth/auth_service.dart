@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_api_availability/google_api_availability.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -20,7 +24,8 @@ import 'auth_exception.dart';
 class AuthService extends GetxService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
-  final PreferenceManager _preferenceManager = Get.find(tag: (PreferenceManager).toString());
+  final PreferenceManager _preferenceManager =
+      Get.find(tag: (PreferenceManager).toString());
 
   handleAuthState() {
     return StreamBuilder(
@@ -29,22 +34,45 @@ class AuthService extends GetxService {
           if (snapshot.hasData) {
             return const HomeView();
           } else {
-            return const LoginView();
+            return LoginView();
           }
         });
   }
 
   signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser =
-        await GoogleSignIn(scopes: <String>["email"]).signIn();
+    try {
+      if (Platform.isAndroid) {
+        GooglePlayServicesAvailability availability =
+            await GoogleApiAvailability.instance
+                .checkGooglePlayServicesAvailability();
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+        if (availability != GooglePlayServicesAvailability.success) {
+          throw AuthException.determineError(FirebaseAuthException(
+              code: "network-request-failed",
+              message: "Google Play Service is not available"));
+        }
+      }
+      final GoogleSignInAccount? googleUser =
+          await GoogleSignIn(scopes: <String>["email"]).signIn();
 
-    final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+            content: Text("The password provided is too weak.")));
+      } else if (e.code == 'email-already-in-use') {
+        return ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+            content: Text("The account already exist for that email.")));
+      }
+      print(e);
+      throw AuthException.determineError(e);
+    }
   }
 
   signInWithApple() async {
@@ -85,8 +113,24 @@ class AuthService extends GetxService {
     }
   }
 
-  signOut() async {
+  signUpWithEmailAndPassword(String email, String password) async {
+    try {
+      return await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return ScaffoldMessenger.of(Get.context!).showSnackBar(
+            SnackBar(content: Text("The password provided is too weak.")));
+      } else if (e.code == 'email-already-in-use') {
+        return ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+            content: Text("The account already exist for that email.")));
+      }
+      print(e);
+      throw AuthException.determineError(e);
+    }
+  }
 
+  logout() async {
     FirebaseAuth.instance.signOut();
 
     if (await _googleSignIn.isSignedIn()) {

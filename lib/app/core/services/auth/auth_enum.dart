@@ -7,5 +7,6 @@ enum AuthError {
   invalidCredential,
   operationNotAllowed,
   weakPassword,
+  googlePlayServiceIsNotAvailable,
   error,
 }

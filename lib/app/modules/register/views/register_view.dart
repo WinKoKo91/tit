@@ -4,16 +4,28 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:get/get.dart';
 
+import '../../../core/src/app_spacing.dart';
 import '../../../widgets/greeting_widget.dart';
+import '../../../widgets/social_login_widget.dart';
 import '../../login/views/login_view.dart';
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
-  const RegisterView({Key? key}) : super(key: key);
+  RegisterView({Key? key}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Obx(() => Stack(
+            children: [
+              _buildBottomNavigationWidget(),
+              if (controller.isLoading)
+                Container(
+                  color: const Color(0x80000000),
+                ),
+            ],
+          )),
       body: Obx(
         () => Stack(
           fit: StackFit.expand,
@@ -28,18 +40,22 @@ class RegisterView extends GetView<RegisterController> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Flexible(
-                        flex: 4,
+                      const Padding(
+                        padding: EdgeInsets.only(
+                          left: AppSpacing.x3l,
+                          right: AppSpacing.x3l,
+                          bottom: AppSpacing.x3l,
+                        ),
                         child: GreetingWidget(
                           message: "Let's Chat",
                         ),
                       ),
                       TextFormField(
+                        textInputAction: TextInputAction.next,
                         controller: controller.nameTEC,
                         decoration: const InputDecoration(
                           hintText: "User Name",
                         ),
-                        obscureText: controller.isHidePassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Password can\'t be empty';
@@ -52,6 +68,7 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                       TextFormField(
                         controller: controller.emailTEC,
+                        textInputAction: TextInputAction.next,
                         // The validator receives the text that the user has entered.
                         decoration: const InputDecoration(
                           hintText: "Email",
@@ -69,6 +86,7 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                       TextFormField(
                         controller: controller.passwordTEC,
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           hintText: "Password",
                           suffixIcon: InkWell(
@@ -93,16 +111,17 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                       TextFormField(
                         controller: controller.confirmPasswordTEC,
+                        textInputAction: TextInputAction.done,
                         decoration: InputDecoration(
                           hintText: "Confirm Password",
                           suffixIcon: InkWell(
-                            onTap: controller.onTapHidePassword,
-                            child: Icon(controller.isHidePassword
+                            onTap: controller.onTapHidePasswordConfirm,
+                            child: Icon(controller.isHidePasswordConfirm
                                 ? Icons.visibility
                                 : Icons.visibility_off),
                           ),
                         ),
-                        obscureText: controller.isHidePassword,
+                        obscureText: controller.isHidePasswordConfirm,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Password can\'t be empty';
@@ -113,35 +132,6 @@ class RegisterView extends GetView<RegisterController> {
                           }
                           return null;
                         },
-                      ),
-                      const Spacer(),
-                      const SocialLoginWidget(),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      SizedBox(
-                          width: double.infinity,
-                          height: 48,
-                          child: ElevatedButton(
-                              onPressed: controller.onRegister,
-                              child: const Text("Register"))),
-                      const Spacer(),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: 'Already have an account?  ',
-                          style: const TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Login',
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Get.back(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.primary)),
-                          ],
-                        ),
                       ),
                     ],
                   ),
@@ -175,6 +165,57 @@ class RegisterView extends GetView<RegisterController> {
         ),
       ),
     );
-    ;
+  }
+
+  _buildBottomNavigationWidget() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl, vertical: AppSpacing.xl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SocialLoginWidget(
+              onAppleLogin: controller.onAppleLogin,
+              onFacebookLogin: controller.onFacebookLogin,
+              onGoogleLogin: controller.onGoogleLogin,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                    onPressed: onRegister, child: const Text("Register"))),
+            const SizedBox(
+              height: 24,
+            ),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: 'Already have an account?  ',
+                style: const TextStyle(color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Login',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => Get.back(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Get.theme.colorScheme.primary)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void onRegister() {
+    if (formKey.currentState!.validate()) {
+      controller.onEmailAndPasswordRegister();
+    }
   }
 }

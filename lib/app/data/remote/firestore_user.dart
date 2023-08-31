@@ -45,6 +45,20 @@ class FireStoreUser {
         .get();
 
     await userdata.docs[0].reference.update({'active': false});
-    _authService.signOut();
+    _authService.logout();
+  }
+
+  static Future<UserModel?> getUser(String userId) async {
+    var userData = await _fireStoreUserCollection
+        .withConverter(
+          fromFirestore: UserModel.fromFireStore,
+          toFirestore: (UserModel userModel, options) =>
+              userModel.toFireStore(),
+        )
+        .where(AppKey.id, isEqualTo: userId)
+        .get();
+
+    var userModel =  userData.docs[0].data();
+    return userModel;
   }
 }

@@ -5,17 +5,29 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:tit/app/core/src/app_colors.dart';
+import 'package:tit/app/core/src/app_spacing.dart';
 import 'package:tit/app/routes/app_pages.dart';
 
 import '../../../widgets/greeting_widget.dart';
+import '../../../widgets/social_login_widget.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  const LoginView({Key? key}) : super(key: key);
+  LoginView({Key? key}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Stack(
+        children: [
+          _buildBottomNavigationWidget(),
+          if (controller.isLoading)
+            Container(
+              color: const Color(0x80000000),
+            ),
+        ],
+      ),
       body: Obx(
         () => Stack(
           fit: StackFit.expand,
@@ -25,21 +37,27 @@ class LoginView extends GetView<LoginController> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 child: Form(
-                  key: controller.formKey,
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Flexible(
-                        flex: 4,
+                      const Padding(
+                        padding: EdgeInsets.only(
+                          left: AppSpacing.x3l,
+                          right: AppSpacing.x3l,
+                          bottom: AppSpacing.x3l,
+                        ),
                         child: GreetingWidget(),
                       ),
                       TextFormField(
                         controller: controller.emailTEC,
+                        textInputAction: TextInputAction.next,
                         // The validator receives the text that the user has entered.
                         decoration: const InputDecoration(
                           hintText: "Email",
                         ),
+                        autofillHints: const [AutofillHints.email],
                         enableInteractiveSelection: false,
                         validator: (value) {
                           if (!GetUtils.isEmail(value!)) {
@@ -53,6 +71,8 @@ class LoginView extends GetView<LoginController> {
                       ),
                       TextFormField(
                         controller: controller.passwordTEC,
+                        textInputAction: TextInputAction.done,
+                        autofillHints: const [AutofillHints.password],
                         decoration: InputDecoration(
                           hintText: "Password",
                           suffixIcon: InkWell(
@@ -77,36 +97,6 @@ class LoginView extends GetView<LoginController> {
                           child: TextButton(
                               onPressed: () {},
                               child: const Text("Forgot Password"))),
-                      const Spacer(),
-                      SocialLoginWidget(),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      SizedBox(
-                          width: double.infinity,
-                          height: 48,
-                          child: ElevatedButton(
-                              onPressed:
-                                  controller.onLogin,
-                              child: const Text("Login"))),
-                      const Spacer(),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: 'Don\'t have an account?  ',
-                          style: const TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Register',
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Get.toNamed(Routes.REGISTER),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.primary)),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -140,35 +130,57 @@ class LoginView extends GetView<LoginController> {
       ),
     );
   }
-}
 
-
-
-class SocialLoginWidget extends GetView<LoginController> {
-  const SocialLoginWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppIconButtonWidget(
-          onPressed: controller.onFacebookLogin,
-          icon: 'assets/svg/logo_facebook.svg',
+  _buildBottomNavigationWidget() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl, vertical: AppSpacing.xl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SocialLoginWidget(
+              onAppleLogin: controller.onAppleLogin,
+              onFacebookLogin: controller.onFacebookLogin,
+              onGoogleLogin: controller.onGoogleLogin,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                    onPressed: onLogin, child: const Text("Login"))),
+            SizedBox(
+              height: AppSpacing.x3l,
+            ),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: 'Don\'t have an account?  ',
+                style: const TextStyle(color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Register',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => Get.toNamed(Routes.REGISTER),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Get.theme.colorScheme.primary)),
+                ],
+              ),
+            ),
+          ],
         ),
-        AppIconButtonWidget(
-          onPressed: controller.onGoogleLogin,
-          icon: 'assets/svg/logo_google.svg',
-        ),
-        AppIconButtonWidget(
-          onPressed: controller.onAppleLogin,
-          icon: 'assets/svg/logo_apple.svg',
-        ),
-      ],
+      ),
     );
+  }
+
+  void onLogin() {
+    if (formKey.currentState!.validate()) {
+      controller.onEmailAndPasswordLogin();
+    }
   }
 }
 

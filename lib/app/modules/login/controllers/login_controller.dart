@@ -18,7 +18,7 @@ class LoginController extends GetxController {
   AuthService authService = Get.find<AuthService>();
   UserRepository userRepository = Get.find<UserRepository>();
 
-  final formKey = GlobalKey<FormState>();
+
 
   final emailTEC = TextEditingController();
   final passwordTEC = TextEditingController();
@@ -147,11 +147,6 @@ class LoginController extends GetxController {
     Get.offAllNamed(Routes.HOME);
   }
 
-  void onLogin() {
-    if (formKey.currentState!.validate()) {
-      onEmailAndPasswordLogin();
-    }
-  }
 
   void onTapHidePassword() {
     _isHidePassword.toggle();

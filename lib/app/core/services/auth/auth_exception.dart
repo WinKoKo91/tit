@@ -24,6 +24,8 @@ class AuthException {
       case 'weak-password':
         return AuthError.weakPassword;
       case 'ERROR_MISSING_GOOGLE_AUTH_TOKEN':
+      case 'network-request-failed':
+        return AuthError.googlePlayServiceIsNotAvailable;
       default:
         return AuthError.error;
     }
