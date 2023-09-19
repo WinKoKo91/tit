@@ -8,5 +8,7 @@ abstract class UserRepository {
 
   Future<UserModel?> getUser();
 
+  Future<UserModel?> editUserInfo(UserModel userModel);
+
   Future<void> signOut();
 }

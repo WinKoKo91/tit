@@ -10,7 +10,6 @@ dependencies:
   get: 4.6.5
   device_info_plus: ^9.0.3
   shared_preferences: ^2.2.0
-  permission_handler: ^10.4.3
   path_provider: ^2.1.0
   package_info_plus: ^4.1.0
 
@@ -32,6 +31,15 @@ dependencies:
   google_api_availability: ^5.0.0
   firebase_core: ^2.15.0
   connectivity_plus: ^4.0.2
+  cached_network_image: ^3.2.3
+  image_cropper: ^5.0.0
+  permission_handler: ^11.0.0
+  flutter_image_compress: ^2.0.4
+
+
+  #QR
+  qr_code_scanner: ^1.0.1
+  qr_flutter: ^4.1.0
 
   # Analytics Tool
   firebase_analytics: 10.4.5

@@ -21,7 +21,7 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    userEntity = await userRepository.getUser();
+    getUserData();
     super.onInit();
   }
 
@@ -52,5 +52,14 @@ class HomeController extends GetxController {
   void onLogout() async{
 
     await userRepository.signOut();
+  }
+
+  void getUserData() async {
+    try{
+      userEntity = await userRepository.getUser();
+    }catch(e){
+
+      print(e);
+    }
   }
 }

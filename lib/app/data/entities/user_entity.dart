@@ -4,7 +4,7 @@ class UserEntity {
   String? email;
   String? photoUrl;
   String? id;
-  bool? active;
+  bool active;
 
   UserEntity(
       {this.accessToken,

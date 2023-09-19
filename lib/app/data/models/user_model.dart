@@ -12,14 +12,14 @@ class UserModel extends UserEntity {
     required String email,
     required String photoUrl,
     required String id,
-     bool? active,
+    bool? active = false,
   }) : super(
             accessToken: accessToken,
             displayName: displayName,
             email: email,
             id: id,
             photoUrl: photoUrl,
-            active: active);
+            active: active??false);
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
@@ -35,4 +35,14 @@ class UserModel extends UserEntity {
   }
 
   Map<String, dynamic> toFireStore() => _$UserModelToJson(this);
+
+  static UserModel convertEntityToUserModel(UserEntity userEntity) {
+    return UserModel(
+      accessToken: userEntity.accessToken ?? "",
+      displayName: userEntity.displayName ?? "",
+      email: userEntity.email ?? "",
+      photoUrl: userEntity.photoUrl ?? "",
+      id: userEntity.id ?? "",
+    );
+  }
 }

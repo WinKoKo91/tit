@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tit/app/core/src/app_size.dart';
 import 'package:tit/app/core/src/app_spacing.dart';
+import 'package:tit/app/routes/app_pages.dart';
 
+import '../../../widgets/profile_image_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -25,16 +27,23 @@ class HomeView extends GetView<HomeController> {
       ),
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.qr_code))
+          IconButton(
+              onPressed: () {
+                Get.toNamed(Routes.EDIT_PROFILE, arguments: controller.userEntity);
+              },
+              icon: Icon(Icons.edit)),
+          IconButton(
+              onPressed: () {
+                Get.toNamed(Routes.QR_SCANNER);
+              },
+              icon: Icon(Icons.qr_code))
         ],
       ),
       body: SafeArea(
         child: Obx(
           () => controller.userEntity == null
               ? Container()
-              : Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+              : SizedBox(
                   width: double.infinity,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,44 +51,13 @@ class HomeView extends GetView<HomeController> {
                       children: [
                         Container(
                           width: double.infinity,
-                          height: Get.height * 0.25,
+                          height: Get.height * 0.23,
                           padding: EdgeInsets.only(top: AppSpacing.xl.h),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: Colors.grey),
-                                ),
-                                height: 90,
-                                width: 90,
-                                child: ClipOval(
-                                    child: Image.network(
-                                  errorBuilder: (context, _, stackTrac) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/logo.svg',
-                                      ),
-                                    );
-                                  },
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Container(
-                                      color: Colors.grey,
-                                      height: 90,
-                                      width: 90,
-                                    );
-                                  },
-                                  controller.userEntity?.photoUrl ?? "",
-                                  height: 90,
-                                  width: 90,
-                                )),
-                              ),
+                              ProfileImageWidget( url:  controller.userEntity!.photoUrl??""),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -90,27 +68,45 @@ class HomeView extends GetView<HomeController> {
                             ],
                           ),
                         ),
+                        Divider(
+                          color: Colors.grey.shade200,
+                        ),
+                        SizedBox(
+                          height: AppSpacing.x2l.h,
+                        ),
                         ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
                           leading: Icon((Icons.dark_mode)),
                           title: Text("Dark Mode"),
-                          trailing: Switch(
+                          trailing: Switch.adaptive(
                             value: controller.state.isDarkMode,
                             onChanged: controller.onDarkModeChange,
                           ),
                         ),
                         ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
                           leading: Icon((Icons.notifications)),
                           title: Text("Notifaction"),
-                          trailing: Switch(
+                          trailing: Switch.adaptive(
                             value: controller.state.isNotificationOn,
                             onChanged: controller.onNotificationStateChange,
                           ),
                         ),
                         ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
                           leading: Icon(Icons.info),
                           title: Text('About'),
                         ),
                         ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
                           onTap: showLogoutDialog,
                           leading: Icon(Icons.exit_to_app),
                           title: Text('Logout'),

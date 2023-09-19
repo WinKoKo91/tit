@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:tit/app/core/constants/app_keys.dart';
 import 'package:tit/app/core/services/auth/auth_service.dart';
@@ -12,25 +13,30 @@ class FireStoreUser {
   static final _authService = Get.find<AuthService>();
 
   static Future<void> addUser(UserModel userModel) async {
-    var userdata = await _fireStoreUserCollection
-        .withConverter(
-          fromFirestore: UserModel.fromFireStore,
-          toFirestore: (UserModel userModel, options) =>
-              userModel.toFireStore(),
-        )
-        .where(AppKey.id, isEqualTo: userModel.id)
-        .get();
-
-    if (userdata.docs.isEmpty) {
-      await _fireStoreUserCollection
+    try {
+      var userdata = await _fireStoreUserCollection
+          .doc(userModel.id)
           .withConverter(
             fromFirestore: UserModel.fromFireStore,
             toFirestore: (UserModel userModel, options) =>
                 userModel.toFireStore(),
           )
-          .add(userModel);
-    } else {
-      await userdata.docs[0].reference.update({'active': true});
+          .get();
+
+      if (!userdata.exists) {
+        await _fireStoreUserCollection
+            .withConverter(
+              fromFirestore: UserModel.fromFireStore,
+              toFirestore: (UserModel userModel, options) =>
+                  userModel.toFireStore(),
+            )
+            .doc(userModel.id)
+            .set(userModel);
+      } else {
+        await userdata.reference.update({'active': true});
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -41,10 +47,10 @@ class FireStoreUser {
           toFirestore: (UserModel userModel, options) =>
               userModel.toFireStore(),
         )
-        .where(AppKey.id, isEqualTo: id)
+        .doc(id)
         .get();
 
-    await userdata.docs[0].reference.update({'active': false});
+    await userdata.reference.update({'active': false});
     _authService.logout();
   }
 
@@ -55,10 +61,28 @@ class FireStoreUser {
           toFirestore: (UserModel userModel, options) =>
               userModel.toFireStore(),
         )
-        .where(AppKey.id, isEqualTo: userId)
+        .doc(userId)
         .get();
 
-    var userModel =  userData.docs[0].data();
-    return userModel;
+    if (userData.exists) {
+      UserModel userModel = userData.data()!;
+      return userModel;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<UserModel?> editUser(UserModel userModel) async {
+    await _fireStoreUserCollection
+        .withConverter(
+          fromFirestore: UserModel.fromFireStore,
+          toFirestore: (UserModel userModel, options) =>
+              userModel.toFireStore(),
+        )
+        .doc(userModel.id)
+        .update(userModel.toFireStore())
+        .onError((error, stackTrace) => print(error))
+        .then((value) => (print("success")));
+    return getUser(userModel.id ?? "");
   }
 }

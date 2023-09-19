@@ -35,7 +35,7 @@ class RegisterView extends GetView<RegisterController> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 child: Form(
-                  key: controller.formKey,
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +73,6 @@ class RegisterView extends GetView<RegisterController> {
                         decoration: const InputDecoration(
                           hintText: "Email",
                         ),
-                        enableInteractiveSelection: false,
                         validator: (value) {
                           if (!GetUtils.isEmail(value!)) {
                             return 'Please enter a valid email address';

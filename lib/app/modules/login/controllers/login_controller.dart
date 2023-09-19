@@ -18,8 +18,6 @@ class LoginController extends GetxController {
   AuthService authService = Get.find<AuthService>();
   UserRepository userRepository = Get.find<UserRepository>();
 
-
-
   final emailTEC = TextEditingController();
   final passwordTEC = TextEditingController();
 
@@ -73,15 +71,7 @@ class LoginController extends GetxController {
       UserCredential userCredential = await authService.signInWithApple();
       addUserOnFireStore(userCredential);
     } catch (e) {
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return AppDialog(
-              title: "Auth Error",
-              desc: e.toString(),
-              type: DialogType.error,
-            );
-          });
+
       isLoading = false;
     }
   }
@@ -129,12 +119,13 @@ class LoginController extends GetxController {
     User user = userCredential.user!;
 
     UserModel userModel = UserModel(
-        id: user.uid ?? "",
-        displayName: user.displayName ?? "",
-        email: user.email ?? "",
-        photoUrl: user.photoURL ?? "",
-        active: true,
-        accessToken: userCredential.credential?.accessToken ?? "");
+      id: user.uid ?? "",
+      displayName: user.displayName ?? "",
+      email: user.email ?? "",
+      photoUrl: user.photoURL ?? "",
+      active: true,
+      accessToken: userCredential.credential?.accessToken ?? "",
+    );
 
     await userRepository.addNewUser(userModel);
 
@@ -146,7 +137,6 @@ class LoginController extends GetxController {
     );
     Get.offAllNamed(Routes.HOME);
   }
-
 
   void onTapHidePassword() {
     _isHidePassword.toggle();

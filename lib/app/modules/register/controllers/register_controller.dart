@@ -43,7 +43,6 @@ class RegisterController extends GetxController {
     _isHidePasswordConfirm.value = value;
   }
 
-
   @override
   void onInit() {
     super.onInit();
@@ -51,10 +50,6 @@ class RegisterController extends GetxController {
 
   @override
   void onReady() {
-    nameTEC.text ="user";
-    emailTEC.text="winwin@gmail.com";
-    passwordTEC.text="p@ssw0rd";
-    confirmPasswordTEC.text="p@ssw0rd";
     super.onReady();
   }
 
@@ -75,8 +70,6 @@ class RegisterController extends GetxController {
   void onTapHidePasswordConfirm() {
     _isHidePasswordConfirm.toggle();
   }
-
-
 
   void onEmailAndPasswordRegister() async {
     isLoading = true;
@@ -114,7 +107,6 @@ class RegisterController extends GetxController {
           });
     }
   }
-
 
   void onGoogleLogin() async {
     isLoading = true;
@@ -164,6 +156,7 @@ class RegisterController extends GetxController {
       isLoading = false;
     }
   }
+
   void addUserOnFireStore(UserCredential userCredential) async {
     User user = userCredential.user!;
 
@@ -185,5 +178,4 @@ class RegisterController extends GetxController {
     );
     Get.offAllNamed(Routes.HOME);
   }
-
 }

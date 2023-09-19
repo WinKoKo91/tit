@@ -25,6 +25,7 @@ class UserRepositoryImpl extends UserRepository {
         AppKey.user, json.encode(userModel.toJson()));
 
     await _preferenceManager.setString(AppKey.id, userModel.id!);
+    if (userModel.active == null) {}
     return await FireStoreUser.addUser(userModel);
   }
 
@@ -32,32 +33,49 @@ class UserRepositoryImpl extends UserRepository {
   Future<UserModel?> getUser() async {
     try {
       if (await _networkConnectionService.isOnline()) {
-        String id =
-            await _preferenceManager.getString(AppKey.id, defaultValue: "");
+        String id = FirebaseAuth.instance.currentUser?.uid ?? "";
+        if (id.isEmpty) {
+          signOut();
+        }
         return FireStoreUser.getUser(id);
       } else {
         String result =
             await _preferenceManager.getString(AppKey.user, defaultValue: "");
+        if (result.isEmpty) {
+          signOut();
+        }
         var resultJson = json.decode(result);
         return UserModel.fromJson(resultJson);
       }
     } catch (e) {
-      return null;
+      rethrow;
     }
   }
 
   @override
   Future<void> signOut() async {
+    String result =
+        await _preferenceManager.getString(AppKey.user, defaultValue: "");
     try {
-      String result =
-          await _preferenceManager.getString(AppKey.user, defaultValue: "");
-      bool isFirstTimeOpen = await _preferenceManager
-          .getBool(AppKey.firstTimeOpen, defaultValue: false);
-
       var resultJson = json.decode(result);
       await FireStoreUser.signOut(resultJson[AppKey.id]);
+    } catch (e) {
+      print(e);
+    } finally {
+      bool isFirstTimeOpen = await _preferenceManager
+          .getBool(AppKey.firstTimeOpen, defaultValue: false);
       _preferenceManager.clear();
       _preferenceManager.setBool(AppKey.firstTimeOpen, isFirstTimeOpen);
+    }
+  }
+
+  @override
+  Future<UserModel?> editUserInfo(UserModel userModel) async {
+    try {
+      UserModel? result = await FireStoreUser.editUser(userModel);
+      await _preferenceManager.setString(
+          AppKey.user, json.encode(result!.toJson()));
+      return result;
     } catch (e) {
       print(e);
     }
