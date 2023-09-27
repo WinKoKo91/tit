@@ -93,7 +93,7 @@ class RegisterController extends GetxController {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
-      Get.offAllNamed(Routes.HOME);
+      Get.offAllNamed(Routes.MAIN);
     } catch (e) {
       isLoading = false;
       showDialog(
@@ -176,6 +176,6 @@ class RegisterController extends GetxController {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
     );
-    Get.offAllNamed(Routes.HOME);
+    Get.offAllNamed(Routes.MAIN);
   }
 }

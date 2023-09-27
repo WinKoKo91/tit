@@ -11,6 +11,8 @@ abstract class Routes {
   static const QR = _Paths.QR;
   static const QR_SCANNER = _Paths.QR_SCANNER;
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const MAIN = _Paths.MAIN;
+  static const CHAT = _Paths.CHAT;
 }
 
 abstract class _Paths {
@@ -23,4 +25,6 @@ abstract class _Paths {
   static const QR = '/qr';
   static const QR_SCANNER = '/qr-scanner';
   static const EDIT_PROFILE = '/edit-profile';
+  static const MAIN = '/main';
+  static const CHAT = '/chat';
 }

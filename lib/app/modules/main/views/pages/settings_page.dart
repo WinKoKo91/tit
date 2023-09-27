@@ -5,14 +5,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tit/app/core/src/app_size.dart';
 import 'package:tit/app/core/src/app_spacing.dart';
-import 'package:tit/app/modules/main/controllers/main_controller.dart';
 import 'package:tit/app/routes/app_pages.dart';
 
-import '../../../widgets/profile_image_widget.dart';
-import '../controllers/home_controller.dart';
+import '../../../../widgets/profile_image_widget.dart';
+import '../../../home/controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
-  const HomeView({Key? key}) : super(key: key);
+class SettingsPage extends GetView<HomeController> {
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +29,12 @@ class HomeView extends GetView<HomeController> {
         actions: [
           IconButton(
               onPressed: () {
-                Get.toNamed(Routes.EDIT_PROFILE,
-                    arguments: controller.userEntity);
+                Get.toNamed(Routes.EDIT_PROFILE, arguments: controller.userEntity);
               },
               icon: Icon(Icons.edit)),
           IconButton(
-              onPressed: () async {
-                var result = await Get.toNamed(Routes.QR_SCANNER);
-                if (result) {
-                  MainController homeController = Get.find<MainController>();
-                  homeController.onPageChanged(1);
-                }
+              onPressed: () {
+                Get.toNamed(Routes.QR_SCANNER);
               },
               icon: Icon(Icons.qr_code))
         ],
@@ -63,9 +57,7 @@ class HomeView extends GetView<HomeController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-
-                              ProfileImageWidget(
-                                  url: controller.userEntity!.photoUrl ?? ""),
+                              ProfileImageWidget( url:  controller.userEntity!.photoUrl??""),
                               const SizedBox(
                                 height: 16,
                               ),

@@ -7,8 +7,9 @@ import 'package:tit/app/data/entities/user_entity.dart';
 import 'package:tit/app/data/models/user_model.dart';
 
 class FireStoreUser {
+
   static final _fireStoreUserCollection =
-      FirebaseFirestore.instance.collection(AppKey.users);
+      FirebaseFirestore.instance.collection(AppKey.userCollection);
 
   static final _authService = Get.find<AuthService>();
 

@@ -135,7 +135,7 @@ class LoginController extends GetxController {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
     );
-    Get.offAllNamed(Routes.HOME);
+    Get.offAllNamed(Routes.MAIN);
   }
 
   void onTapHidePassword() {

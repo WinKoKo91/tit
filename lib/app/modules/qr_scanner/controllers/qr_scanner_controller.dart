@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:tit/app/data/models/person_model.dart';
+import 'package:tit/app/data/models/user_model.dart';
+
+import '../../../data/repositories/person_repository.dart';
+import '../../../data/repositories/user_repository.dart';
+import '../../../routes/app_pages.dart';
 
 class QrScannerController extends GetxController {
+  PersonRepository personRepository = Get.find<PersonRepository>();
+  UserRepository userRepository = Get.find<UserRepository>();
 
   Barcode? result;
   QRViewController? qrController;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
 
   final _hasPermission = true.obs;
 
@@ -18,21 +25,43 @@ class QrScannerController extends GetxController {
   set hasPermission(value) {
     _hasPermission.value = value;
   }
+
   @override
   void onInit() {
     getCameraPermission();
     super.onInit();
   }
 
-
-
   void onQRViewCreated(QRViewController controller) {
     qrController = controller;
 
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
       if (scanData.code!.isNotEmpty) {
         qrController!.pauseCamera();
-        //TODO : task
+        PersonModel? personModel =
+            await personRepository.checkPerson(scanData.code ?? "");
+        if (personModel != null) {
+          UserModel? userModel = await userRepository.getUser();
+
+          if (personModel.id == userModel!.id!) {
+            Get.showSnackbar(const GetSnackBar(message: "Data not correct"))
+                .show();
+            return;
+          }
+          // Add Person in your data
+          await personRepository.addPerson(userModel!.id!, personModel);
+          // Add your data in person
+          await personRepository.addPerson(personModel.id!,
+              PersonModel.convertEntityToPersonModel(userModel));
+
+          Get.showSnackbar(
+                  const GetSnackBar(title: "Success", message: "Contact Added"))
+              .show();
+          Get.offAllNamed(Routes.MAIN, arguments: true);
+        } else {
+          Get.showSnackbar(const GetSnackBar(message: "Data not correct"))
+              .show();
+        }
       }
     });
   }
@@ -76,5 +105,4 @@ class QrScannerController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 }
