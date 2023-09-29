@@ -53,10 +53,6 @@ class BubblePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return oldDelegate !=
-        BubblePainter(
-            scrollable: _scrollable,
-            bubbleContext: _bubbleContext,
-            colors: _colors);
+    return true;
   }
 }

@@ -54,6 +54,7 @@ class QrScannerController extends GetxController {
           await personRepository.addPerson(personModel.id!,
               PersonModel.convertEntityToPersonModel(userModel));
 
+
           Get.showSnackbar(
                   const GetSnackBar(title: "Success", message: "Contact Added"))
               .show();

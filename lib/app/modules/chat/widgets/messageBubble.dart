@@ -18,27 +18,19 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final messageAlignment =
-    message.isMine ? Alignment.topLeft : Alignment.topRight;
+        message.isMine ? Alignment.topLeft : Alignment.topRight;
 
     return FractionallySizedBox(
       alignment: messageAlignment,
-      widthFactor: 0.8,
+      widthFactor: 0.9,
       child: Align(
         alignment: messageAlignment,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 20.0),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-            child: ChatBubbleBackground(
-              colors: [
-                if (message.isMine) ...const [
-                  Color(0xFF6C7689),
-                  Color(0xFF3A364B),
-                ] else ...const [
-                  Color(0xFF19B7FF),
-                  Color(0xFF491CCB),
-                ],
-              ],
+            child: Container(
+              color: message.isMine ? Colors.grey : Colors.blue,
               child: DefaultTextStyle.merge(
                 style: const TextStyle(
                   fontSize: 18.0,
@@ -56,7 +48,6 @@ class MessageBubble extends StatelessWidget {
     );
   }
 }
-
 
 enum MessageOwner { myself, other }
 
